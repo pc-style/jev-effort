@@ -1,0 +1,12 @@
+{
+  "name": "@jev-effort/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "dependencies": {
+    "@ai-sdk/gateway": "^4.0.94",
+    "@ai-sdk/typesafe-ai": "^3.0.8",
+    "ai": "^7.0.116"
+  }
+}

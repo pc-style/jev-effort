@@ -1,0 +1,12 @@
+{
+  "name": "jev-effort",
+  "owner": { "name": "pc-style", "url": "https://github.com/pc-style" },
+  "metadata": { "description": "Jev-classified, per-turn reasoning effort for coding agents." },
+  "plugins": [
+    {
+      "name": "jev-effort",
+      "source": "./plugins/claude-code",
+      "description": "Classifies each prompt with TypeSafe's Jev and steers Claude's reasoning effort turn by turn."
+    }
+  ]
+}
