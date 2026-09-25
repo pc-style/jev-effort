@@ -1,0 +1,13 @@
+{
+  "name": "jev-effort",
+  "displayName": "Jev Effort",
+  "version": "0.1.0",
+  "description": "Uses TypeSafe's Jev decision model (via AI SDK: Vercel AI Gateway, OpenRouter or TypeSafe) to classify each prompt and steer Cursor's reasoning effort during a thread.",
+  "author": {
+    "name": "pc-style"
+  },
+  "homepage": "https://github.com/pc-style/jev-effort",
+  "repository": "https://github.com/pc-style/jev-effort",
+  "license": "MIT",
+  "keywords": ["effort", "reasoning", "jev", "typesafe", "ai-sdk", "hooks"]
+}

@@ -40,6 +40,13 @@
         "@jev-effort/core": "workspace:*",
       },
     },
+    "plugins/cursor": {
+      "name": "@jev-effort/cursor",
+      "version": "0.1.0",
+      "dependencies": {
+        "@jev-effort/core": "workspace:*",
+      },
+    },
   },
   "packages": {
     "@ai-sdk/gateway": ["@ai-sdk/gateway@4.0.94", "", { "dependencies": { "@ai-sdk/provider": "4.0.18", "@ai-sdk/provider-utils": "5.0.49", "@vercel/oidc": "3.2.0" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-hcp7GLnMynH6NfMnemgvW9acn7j3WsUe/dHFzX3/fhPit08xhm1aYmDGHMiIT6YwsXVBxkit9TriKb2SGAOg+Q=="],
@@ -59,6 +66,8 @@
     "@jev-effort/codex": ["@jev-effort/codex@workspace:plugins/codex"],
 
     "@jev-effort/core": ["@jev-effort/core@workspace:packages/core"],
+
+    "@jev-effort/cursor": ["@jev-effort/cursor@workspace:plugins/cursor"],
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
 

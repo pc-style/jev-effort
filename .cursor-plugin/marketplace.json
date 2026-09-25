@@ -1,0 +1,12 @@
+{
+  "name": "jev-effort",
+  "owner": { "name": "pc-style" },
+  "metadata": { "description": "Jev-classified, per-turn reasoning effort for coding agents." },
+  "plugins": [
+    {
+      "name": "jev-effort",
+      "source": "plugins/cursor",
+      "description": "Classifies each prompt with TypeSafe's Jev and steers Cursor's reasoning effort turn by turn."
+    }
+  ]
+}
