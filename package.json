@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "@ampcode/plugin": "^0.0.0-20260925001753-g49e7366",
     "@types/bun": "latest",
     "typescript": "^7"
   }

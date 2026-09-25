@@ -5,6 +5,7 @@
     "": {
       "name": "jev-effort",
       "devDependencies": {
+        "@ampcode/plugin": "^0.0.0-20260925001753-g49e7366",
         "@types/bun": "latest",
         "typescript": "^7",
       },
@@ -16,6 +17,13 @@
         "@ai-sdk/gateway": "^4.0.94",
         "@ai-sdk/typesafe-ai": "^3.0.8",
         "ai": "^7.0.116",
+      },
+    },
+    "plugins/amp": {
+      "name": "@jev-effort/amp",
+      "version": "0.1.0",
+      "dependencies": {
+        "@jev-effort/core": "workspace:*",
       },
     },
     "plugins/claude-code": {
@@ -41,6 +49,10 @@
     "@ai-sdk/provider-utils": ["@ai-sdk/provider-utils@5.0.49", "", { "dependencies": { "@ai-sdk/provider": "4.0.18", "@standard-schema/spec": "^1.1.0", "@workflow/serde": "4.1.0", "eventsource-parser": "^3.0.8", "undici": "^7.29.0" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-T+/H8DCvqJoCqLhltVatS7ffA779Iyk/ZZrgNXkrgv51E0n2Cd6eIdCmtwhCGIKqtbTtwCvTmQdAMv5Z8rOGHQ=="],
 
     "@ai-sdk/typesafe-ai": ["@ai-sdk/typesafe-ai@3.0.8", "", { "dependencies": { "@ai-sdk/provider": "4.0.18", "@ai-sdk/provider-utils": "5.0.49" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-nP5NJGCwZ7jDE2dImurTU9igbj1OUeFAXLvZKcM05KlBpLxhOddBe3sMftAhQq3Zq+B8NqLx1dcW4vQVD2l32w=="],
+
+    "@ampcode/plugin": ["@ampcode/plugin@0.0.0-20260925001753-g49e7366", "", {}, "sha512-vOkL8B/XLTnnRiOJNm1wU4ckcroECSWZisv23EWff5b/of/7Phi5+JaJplHhoEVyQDMbEYVnVEbKk6H2JvwgnA=="],
+
+    "@jev-effort/amp": ["@jev-effort/amp@workspace:plugins/amp"],
 
     "@jev-effort/claude-code": ["@jev-effort/claude-code@workspace:plugins/claude-code"],
 

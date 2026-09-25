@@ -19,7 +19,7 @@ Jev runs through the AI SDK's `experimental_evaluate`, on **Vercel AI Gateway**,
 | Claude Code | ✅ | [`plugins/claude-code`](plugins/claude-code) |
 | Codex CLI | ✅ | [`plugins/codex`](plugins/codex) |
 | Cursor | planned | `plugins/cursor` |
-| Amp | planned | `plugins/amp` |
+| Amp | ✅ | [`plugins/amp`](plugins/amp) |
 
 ## Install (Claude Code)
 
@@ -37,6 +37,21 @@ Then set one provider key in the environment Claude Code runs in:
 | TypeSafe | `TYPESAFE_AI_API_KEY` or `TYPESAFE_API_KEY` | `jev-latest` |
 
 The first key found wins, or force one with `JEV_PROVIDER=gateway|openrouter|typesafe`.
+
+## Install (Amp)
+
+Build the standalone Amp plugin, then copy it to your user plugins directory:
+
+```sh
+bun install
+bun run build
+mkdir -p ~/.config/amp/plugins
+cp .amp/plugins/jev-effort.js ~/.config/amp/plugins/jev-effort.js
+```
+
+Reload plugins in Amp (or start a new session). The built file is also a project plugin in this repository, so Amp loads it here without the copy. To use it only in a different project, copy the file to that project's `.amp/plugins/` instead.
+
+Amp's `agent.start` hook classifies each submitted prompt and adds the resulting directive to that turn's context. Amp does not offer a hook to change an existing thread's model or reasoning effort, so this plugin does not switch modes or suggest an effort command. Set one of the provider keys above in the environment Amp runs in. State and decision logs go to `~/.config/amp/jev-effort/`; without a key (or when disabled or classification fails), it adds no context and lets the turn proceed.
 
 ### What it does in Claude Code
 
@@ -94,6 +109,7 @@ packages/core/          agent-agnostic: Jev classifier, turn advice, session sta
 plugins/claude-code/    Claude Code adapter (hooks → dist/hook.mjs)
 plugins/codex/          Codex adapter (UserPromptSubmit → dist/hook.mjs)
 .agents/plugins/       Codex marketplace manifest
+plugins/amp/            Amp adapter (agent.start → .amp/plugins/jev-effort.js)
 .claude-plugin/         Claude Code marketplace manifest
 ```
 
@@ -113,12 +129,12 @@ const advice = await advise(prompt, {
 // inject advice.context into the model's context; show advice.nudge to the user
 ```
 
-If the host only reports effort after a turn, as Claude Code does, call `recordEffort(level, opts)` from that hook. Adapters bundle to a single `dist/*.mjs` with `bun build`, so installed plugins need no `node_modules`.
+If the host only reports effort after a turn, as Claude Code does, call `recordEffort(level, opts)` from that hook. Adapters bundle with `bun build`, so installed plugins need no `node_modules`.
 
 Things to check per host:
 - **Codex CLI:** uses `UserPromptSubmit` and `additionalContext`; the hook contract cannot read or set `model_reasoning_effort`.
 - **Cursor:** use `beforeSubmitPrompt`.
-- **Amp:** uses plugins/toolboxes.
+- **Amp:** uses the `agent.start` plugin hook to inject per-turn context; effort cannot be changed by a hook.
 
 Verify every hook surface against that host's current docs before writing its adapter.
 

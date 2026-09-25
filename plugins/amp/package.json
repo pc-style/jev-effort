@@ -1,0 +1,12 @@
+{
+  "name": "@jev-effort/amp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bun build src/index.ts --target=bun --format=esm --outfile ../../.amp/plugins/jev-effort.js"
+  },
+  "dependencies": {
+    "@jev-effort/core": "workspace:*"
+  }
+}

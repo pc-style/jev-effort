@@ -31,7 +31,7 @@ export function resolveModel(env = process.env): { provider: ProviderName; model
         model: createTypeSafeAi({
           baseURL: "https://openrouter.ai/api/v1",
           apiKey: env.OPENROUTER_API_KEY,
-          headers: { "X-Title": "jev-effort (Claude Code plugin)" },
+          headers: { "X-Title": "jev-effort" },
         }).evaluationModel(env.JEV_MODEL ?? "typesafe/jev-1.13"),
       };
     case "typesafe":
