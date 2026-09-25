@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "jev-effort",
+  "version": "0.1.0",
+  "description": "Classifies each prompt with Jev and adds per-turn verification and autonomy guidance to Codex.",
+  "author": { "name": "pc-style", "url": "https://github.com/pc-style" },
+  "repository": "https://github.com/pc-style/jev-effort",
+  "license": "MIT",
+  "extensions": {
+    "com.openai": {
+      "hooks": "./hooks/hooks.json",
+      "interface": {
+        "displayName": "Jev Effort",
+        "shortDescription": "Per-turn effort guidance powered by Jev",
+        "longDescription": "Uses Jev to classify prompts and guide Codex's verification and autonomy. Requires a provider key and Node.js. Does not change the model's reasoning-effort setting.",
+        "developerName": "pc-style",
+        "category": "Coding"
+      }
+    }
+  }
+}

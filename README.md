@@ -17,7 +17,7 @@ Jev runs through the AI SDK's `experimental_evaluate`, on **Vercel AI Gateway**,
 | agent | status | path |
 | --- | --- | --- |
 | Claude Code | ✅ | [`plugins/claude-code`](plugins/claude-code) |
-| Codex CLI | planned | `plugins/codex` |
+| Codex CLI | ✅ | [`plugins/codex`](plugins/codex) |
 | Cursor | planned | `plugins/cursor` |
 | Amp | planned | `plugins/amp` |
 
@@ -46,6 +46,31 @@ The first key found wins, or force one with `JEV_PROVIDER=gateway|openrouter|typ
 
 **Why it doesn't flip `/effort` itself:** Claude Code has no hook output that sets effort. Writing `effortLevel` into settings mid-session didn't change the running session either, as measured with hook-reported `effort.level` in headless sessions on v2.1.282. So the plugin steers in context, which the model follows within its effort setting, and leaves the level change to you.
 
+## Install (Codex CLI)
+
+Requires Node.js on `PATH` and Codex with plugin hooks (validated with CLI 0.157.0).
+From this checkout:
+
+```sh
+codex plugin marketplace add .
+codex plugin add jev-effort@jev-effort
+```
+
+Start a new Codex session, open `/hooks`, and review and trust the plugin hook.
+Set one of the provider keys listed above in the environment that starts Codex.
+The bundled adapter needs no Bun or `node_modules` at runtime.
+
+### What it does in Codex
+
+- **`UserPromptSubmit`** classifies the prompt through the shared Jev core and injects per-turn guidance as `additionalContext`.
+- Codex's documented hook input does not expose current reasoning effort, and hook output cannot change it. Change the setting yourself using Codex's model controls.
+- There is no `Stop` hook or effort-gap nudge on Codex. Jev's `max` is a classification label, not a model setting.
+- Missing credentials, invalid input, classifier failures and storage errors exit silently without blocking the prompt.
+
+The hook sends the current prompt (up to 8,000 characters) and up to four recent prompts (1,000 characters each) to the configured Jev provider. The shared core retains the last four prompts in local session state. Codex stores this under `$PLUGIN_DATA`, falling back to `$CLAUDE_PLUGIN_DATA`, then `${CODEX_HOME:-~/.codex}/jev-effort`.
+
+Contracts: [Codex hooks](https://developers.openai.com/codex/hooks), [plugin packaging](https://developers.openai.com/plugins/build/plugins).
+
 ## Configuration
 
 | env | default | |
@@ -57,7 +82,7 @@ The first key found wins, or force one with `JEV_PROVIDER=gateway|openrouter|typ
 | `JEV_EFFORT_QUIET` | – | `1` = no user-facing suggestion |
 | `JEV_EFFORT_DISABLE` | – | `1` = off |
 
-Decisions are logged to `decisions.jsonl` in the plugin data dir (`$CLAUDE_PLUGIN_DATA` for Claude Code).
+Decisions are logged to `decisions.jsonl` in the plugin data dir (`$CLAUDE_PLUGIN_DATA` for Claude Code, `$PLUGIN_DATA` for Codex). Nudge settings only apply to adapters that receive the current effort level.
 
 ## Layout
 
@@ -67,6 +92,8 @@ packages/core/          agent-agnostic: Jev classifier, turn advice, session sta
   src/advise.ts         advise() / recordEffort(): directive text, nudges, history
   src/cli.ts            bun run classify "<prompt>" …
 plugins/claude-code/    Claude Code adapter (hooks → dist/hook.mjs)
+plugins/codex/          Codex adapter (UserPromptSubmit → dist/hook.mjs)
+.agents/plugins/       Codex marketplace manifest
 .claude-plugin/         Claude Code marketplace manifest
 ```
 
@@ -89,7 +116,7 @@ const advice = await advise(prompt, {
 If the host only reports effort after a turn, as Claude Code does, call `recordEffort(level, opts)` from that hook. Adapters bundle to a single `dist/*.mjs` with `bun build`, so installed plugins need no `node_modules`.
 
 Things to check per host:
-- **Codex CLI:** its hooks mirror Claude Code's event and output shapes, and reasoning effort is `model_reasoning_effort`.
+- **Codex CLI:** uses `UserPromptSubmit` and `additionalContext`; the hook contract cannot read or set `model_reasoning_effort`.
 - **Cursor:** use `beforeSubmitPrompt`.
 - **Amp:** uses plugins/toolboxes.
 
@@ -101,6 +128,7 @@ Verify every hook surface against that host's current docs before writing its ad
 bun install
 bun run classify "the checkout test is flaky in CI, fix it" "rename foo to bar"
 bun run typecheck
+bun run --filter '@jev-effort/codex' test
 bun run build        # rebuilds every adapter's dist/ — commit it, installs run the bundle
 claude --plugin-dir plugins/claude-code
 ```

@@ -1,0 +1,13 @@
+{
+  "name": "@jev-effort/codex",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bun build src/hook.ts --target=node --format=esm --minify --outfile dist/hook.mjs",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@jev-effort/core": "workspace:*"
+  }
+}

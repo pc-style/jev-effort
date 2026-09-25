@@ -1,0 +1,12 @@
+{
+  "name": "jev-effort",
+  "interface": { "displayName": "Jev Effort" },
+  "plugins": [
+    {
+      "name": "jev-effort",
+      "source": { "source": "local", "path": "./plugins/codex" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Coding"
+    }
+  ]
+}
